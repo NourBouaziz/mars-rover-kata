@@ -11,7 +11,7 @@ public class Rover {
     }
 
     public void move() {
-        position = position.translate(direction);
+        position.translate(direction);
     }
 
     public void goLeft() {
@@ -28,7 +28,7 @@ public class Rover {
     }
 
     public Position getPosition() {
-        return position;
+        return new Position(position.x(), position.y());
     }
 
 

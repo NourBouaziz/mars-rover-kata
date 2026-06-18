@@ -19,8 +19,12 @@ public enum Direction {
         this.id = id;
     }
 
-    public Direction findById(int id) {
-        return Arrays.stream(values()).filter(x -> x.id == id).findFirst().orElse(Direction.N);
+    public static Direction findById(int id) {
+        return Arrays.stream(values()).filter(
+                x -> x.id == id)
+                .findFirst().orElseThrow(
+                        () -> new IllegalArgumentException("Unknown direction id: " + id));
+
     }
 
     public Direction left() {

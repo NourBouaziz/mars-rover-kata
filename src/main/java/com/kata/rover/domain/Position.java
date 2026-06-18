@@ -10,10 +10,9 @@ public class Position {
         this.y = y;
     }
 
-    public Position translate(Direction direction) {
+    public void translate(Direction direction) {
         this.x = x + direction.getDx();
         this.y = y + direction.getDy();
-        return this;
     }
 
     public int x() {
