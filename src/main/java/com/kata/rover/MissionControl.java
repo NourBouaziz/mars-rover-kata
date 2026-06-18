@@ -4,10 +4,8 @@ import com.kata.rover.domain.Plateau;
 import com.kata.rover.domain.Rover;
 import com.kata.rover.domain.RoverOutsidePlateauException;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MissionControl {
     private final Plateau mars;

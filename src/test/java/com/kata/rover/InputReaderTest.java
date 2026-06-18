@@ -1,6 +1,5 @@
 package com.kata.rover;
 
-import com.kata.rover.domain.Plateau;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -11,14 +10,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 class InputReaderTest {
 
     InputReader ir = new InputReader();
 
     @Test
     void plateauShouldBeParsed() {
-        assertEquals(new Plateau(3, 3), ir.parsePlateau("3 3"));
+        String plateau = "3 4";
+        assertEquals(3, ir.parsePlateau(plateau).getMaxX());
+        assertEquals(4, ir.parsePlateau(plateau).getMaxY());
     }
 
     @Test

@@ -19,4 +19,11 @@ public class Plateau {
                 || position.y() > maxY;
     }
 
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
 }
