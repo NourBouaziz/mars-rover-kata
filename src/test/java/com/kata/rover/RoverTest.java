@@ -57,10 +57,6 @@ class RoverApplicationTests {
     }
 
     @Test
-    void shouldStopWhenLeavingPlateau() {
-    }
-
-    @Test
     void shouldMoveAccordingToSteps() {
         Rover r = new Rover(1, 2, Direction.S);
         r.goLeft(); //1, 2, E
@@ -89,6 +85,17 @@ class RoverApplicationTests {
         Rover r = new Rover(1, 1, Direction.E);
 
         assertThrows(IllegalArgumentException.class, () -> mc.executeCommands(r, new char[]{'X'}));
+    }
+
+    @Test
+    void test() {
+        Plateau mars = new Plateau(5,5);
+        MissionControl mc = new MissionControl(mars);
+        Rover r = new Rover(1, 1, Direction.W);
+        r.goRight();
+
+        System.out.println(r);
+
     }
 
 
