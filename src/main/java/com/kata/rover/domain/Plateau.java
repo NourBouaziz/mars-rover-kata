@@ -19,17 +19,4 @@ public class Plateau {
                 || position.y() > maxY;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Plateau plateau = (Plateau) o;
-        return maxX == plateau.maxX && maxY == plateau.maxY;
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(maxX, maxY);
-    }
-
 }
