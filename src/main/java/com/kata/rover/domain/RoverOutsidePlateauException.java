@@ -1,10 +1,9 @@
 package com.kata.rover.domain;
 
-public class RoverOutsideMapException extends RuntimeException {
-    private final Rover rover;
+public class RoverOutsidePlateauException extends RuntimeException {
 
-    public RoverOutsideMapException(Rover rover) {
-        this.rover = rover;
+    public RoverOutsidePlateauException(Rover rover) {
+        super("Rover " + rover + " is outside plateau");
     }
 }
 

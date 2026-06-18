@@ -1,45 +1,66 @@
 package com.kata.rover;
 
+import com.kata.rover.domain.Plateau;
 import com.kata.rover.domain.Rover;
 import com.kata.rover.domain.RoverOutsidePlateauException;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
-/**
- * Responsable de l'orchestration : parcourt les lignes du fichier
- * (apres le plateau), construit chaque rover, execute ses commandes,
- * et logue le resultat ou les avertissements.
- */
-public class MissionRunner {
+public class MissionControl {
+    private final Plateau mars;
+    private final LinkedHashMap<Rover, String> rovers = new LinkedHashMap<>();
 
-    private static final Logger LOGGER = Logger.getLogger(MissionRunner.class.getName());
-
-    private final InputReader inputReader;
-    private final MissionControl missionControl;
-
-    public MissionRunner(InputReader inputReader, MissionControl missionControl) {
-        this.inputReader = inputReader;
-        this.missionControl = missionControl;
+    public MissionControl(Plateau mars) {
+        this.mars = mars;
     }
 
-    public void run(List<String> lines) {
-        for (int i = 1; i + 1 < lines.size(); i += 2) {
-            Rover rover = inputReader.parseRover(lines.get(i));
-            char[] commands = lines.get(i + 1).trim().toCharArray();
-            try {
-                processRover(rover, commands);
-            } catch (RoverOutsidePlateauException re) {
-                LOGGER.log(Level.WARNING, missionControl.getWarnings(rover));
-                continue;
-            }
-            System.out.println(rover);
+    public void addRover(Rover rover) {
+        rovers.put(rover, "");
+        checkPositionValidity(rover, "Initial position is out of scope of the plateau");
+    }
+
+    private void checkPositionValidity(Rover rover, String message) {
+        if (mars.doesNotContain(rover.getPosition())) {
+            appendWarning(rover, message);
+            throw new RoverOutsidePlateauException(rover);
         }
     }
 
-    private void processRover(Rover rover, char[] commands) {
-        missionControl.addRover(rover);
-        missionControl.executeCommands(rover, commands);
+    public void attemptMove(Rover rover) {
+        rover.move();
+        checkPositionValidity(rover, "Attempted move is invalid");
+    }
+
+    public void appendWarning(Rover rover, String message) {
+        String existing = rovers.getOrDefault(rover, "");
+        StringBuilder sb = new StringBuilder();
+        if (!existing.isBlank()) {
+            sb.append(existing);
+            sb.append("|");
+        }
+        sb.append(message);
+        rovers.put(rover, sb.toString());
+    }
+
+    public void executeCommands(Rover rover, char[] commands) {
+        for (char command : commands) {
+            switch (command) {
+                case 'M' -> attemptMove(rover);
+                case 'L' -> rover.goLeft();
+                case 'R' -> rover.goRight();
+                default -> throw new IllegalArgumentException("Commande inconnue: " + command);
+            }
+        }
+    }
+
+    public String getWarnings(Rover rover) {
+        return rovers.getOrDefault(rover, "");
+    }
+
+    public List<Rover> getRovers() {
+        return List.copyOf(rovers.keySet());
     }
 }

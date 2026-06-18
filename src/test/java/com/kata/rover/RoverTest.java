@@ -3,12 +3,13 @@ package com.kata.rover;
 import com.kata.rover.domain.Direction;
 import com.kata.rover.domain.Plateau;
 import com.kata.rover.domain.Rover;
+import com.kata.rover.domain.RoverOutsidePlateauException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RoverApplicationTests {
+class RoverTest {
 
     @Test
     void shouldMoveNorth() {
@@ -48,12 +49,11 @@ class RoverApplicationTests {
     }
 
     @Test
-    void shouldDisplayWarningWhenOutsidePlateau() {
+    void shouldThrowExceptionWhenOutsidePlateau() {
         Plateau mars = new Plateau(1,1);
         MissionControl mc = new MissionControl(mars);
         Rover r = new Rover(1, 2, Direction.N);
-        mc.executeCommands(r, "LM".toCharArray());
-        assertEquals("Attempted move is invalid", mc.getWarnings(r));
+        assertThrows(RoverOutsidePlateauException.class, () -> mc.executeCommands(r, "LM".toCharArray()));
     }
 
     @Test
@@ -73,9 +73,7 @@ class RoverApplicationTests {
         Plateau mars = new Plateau(1,1);
         MissionControl mc = new MissionControl(mars);
         Rover r = new Rover(1, 1, Direction.E);
-        mc.executeCommands(r, new char[]{'M'});
-        assertEquals("1 1 E", r.toString());
-        assertEquals("Attempted move is invalid", mc.getWarnings(r));
+        assertThrows(RoverOutsidePlateauException.class, () -> mc.executeCommands(r, new char[]{'M'}));
     }
 
     @Test
@@ -87,16 +85,6 @@ class RoverApplicationTests {
         assertThrows(IllegalArgumentException.class, () -> mc.executeCommands(r, new char[]{'X'}));
     }
 
-    @Test
-    void test() {
-        Plateau mars = new Plateau(5,5);
-        MissionControl mc = new MissionControl(mars);
-        Rover r = new Rover(1, 1, Direction.W);
-        r.goRight();
-
-        System.out.println(r);
-
-    }
 
 
 }
